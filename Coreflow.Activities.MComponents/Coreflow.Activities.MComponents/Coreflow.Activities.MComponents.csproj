@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Coreflow\src\Coreflow\Coreflow.csproj" />
+    <ProjectReference Include="..\..\..\MComponents\MComponents.Shared\MComponents.Shared.csproj" />
+    <ProjectReference Include="..\..\..\MComponents\MComponents\MComponents.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /Y $(TargetPath) &quot;C:\GitHub\Coreflow\Coreflow.Web\Plugins&quot;" />
+  </Target>
+
+</Project>
