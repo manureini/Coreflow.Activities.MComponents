@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /Y $(TargetPath) &quot;C:\GitHub\Coreflow\Coreflow.Web\Plugins&quot;" />
+    <Exec Command="xcopy /Y $(TargetPath) &quot;..\..\..\Coreflow\Coreflow.Web\Plugins&quot;" />
   </Target>
 
 </Project>

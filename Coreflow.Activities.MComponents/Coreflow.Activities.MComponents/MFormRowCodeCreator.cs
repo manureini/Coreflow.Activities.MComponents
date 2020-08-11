@@ -25,13 +25,9 @@ namespace Coreflow.Activities.MComponents
 
         public override void ToSequenceCode(FlowBuilderContext pBuilderContext, FlowCodeWriter pCodeWriter, ICodeCreatorContainerCreator pContainer)
         {
-            pCodeWriter.AppendLineTop("{");
-
-            pCodeWriter.AppendLineTop("int formRow = mFormRow++;");                       
+            pCodeWriter.AppendLineTop("int formRow = mFormRow++;");
 
             AddCodeCreatorsCode(pBuilderContext, pCodeWriter);
-
-            pCodeWriter.AppendLineTop("}");
         }
 
         public CodeCreatorParameter[] GetParameters()
