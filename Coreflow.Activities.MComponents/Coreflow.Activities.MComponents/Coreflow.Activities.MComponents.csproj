@@ -10,8 +10,4 @@
     <ProjectReference Include="..\..\..\MComponents\MComponents\MComponents.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /Y $(TargetPath) &quot;..\..\..\Coreflow\Coreflow.Web\Plugins&quot;" />
-  </Target>
-
 </Project>
