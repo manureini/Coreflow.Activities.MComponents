@@ -5,9 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MComponents" Version="1.1.9" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Coreflow\src\Coreflow\Coreflow.csproj" />
-    <ProjectReference Include="..\..\..\MComponents\MComponents.Shared\MComponents.Shared.csproj" />
-    <ProjectReference Include="..\..\..\MComponents\MComponents\MComponents.csproj" />
   </ItemGroup>
 
 </Project>
