@@ -2,6 +2,7 @@
 using Coreflow.Interfaces;
 using Coreflow.Objects;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Coreflow.Activities.MComponents
 {
@@ -24,7 +25,12 @@ namespace Coreflow.Activities.MComponents
         public override string Icon => "fa-keyboard";
 
         public override void ToSequenceCode(FlowBuilderContext pBuilderContext, FlowCodeWriter pCodeWriter, ICodeCreatorContainerCreator pContainer)
-        {
+        { 
+            if (!pBuilderContext.CurrentSymbols.Any(s => s.Name == "mFormRow"))
+            {
+                pCodeWriter.AppendLineTop("int mFormRow = 0;");
+            }
+
             pCodeWriter.AppendLineTop("int formRow = mFormRow++;");
 
             AddCodeCreatorsCode(pBuilderContext, pCodeWriter);
