@@ -8,8 +8,8 @@ namespace Coreflow.Activities.MComponents
     {
         public void OnEnable()
         {
-            var asm = typeof(IMPropertyField).Assembly;
-            Console.WriteLine(asm.Location);
+          //  var asm = typeof(IMPropertyField).Assembly;
+          //   Console.WriteLine(asm.Location);
         }
     }
 }
