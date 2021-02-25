@@ -22,7 +22,7 @@ namespace Coreflow.Activities.MComponents
            IList<IMPropertyField> pMFields,
 
            [DisplayMeta("Row")]
-           [DefaultValue("formRow")]
+           [DefaultValue("mFormRow")]
            int pRow,
 
            [DisplayMeta("Value Type")]

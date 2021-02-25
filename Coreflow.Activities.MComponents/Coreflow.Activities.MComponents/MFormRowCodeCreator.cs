@@ -24,15 +24,17 @@ namespace Coreflow.Activities.MComponents
 
         public override string Icon => "fa-keyboard";
 
-        public override void ToSequenceCode(FlowBuilderContext pBuilderContext, FlowCodeWriter pCodeWriter)
-        { 
+        public override void WriteHeaderCodeToParentContainer(FlowBuilderContext pBuilderContext, FlowCodeWriter pCodeWriter)
+        {
             if (!pBuilderContext.CurrentSymbols.Any(s => s.Name == "mFormRow"))
             {
                 pCodeWriter.AppendLineTop("int mFormRow = 0;");
             }
+        }
 
-            pCodeWriter.AppendLineTop("int formRow = mFormRow++;");
-
+        public override void ToSequenceCode(FlowBuilderContext pBuilderContext, FlowCodeWriter pCodeWriter)
+        {
+            pCodeWriter.AppendLineTop("mFormRow++;");
             AddCodeCreatorsCode(pBuilderContext, pCodeWriter);
         }
 
