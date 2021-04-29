@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Markdig" Version="0.23.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Coreflow\src\Coreflow\Coreflow.csproj" />
     <ProjectReference Include="..\..\..\MComponents\MComponents.Shared\MComponents.Shared.csproj" />
     <ProjectReference Include="..\..\..\MComponents\MComponents\MComponents.csproj" />

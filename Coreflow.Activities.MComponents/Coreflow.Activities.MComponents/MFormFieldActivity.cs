@@ -19,7 +19,7 @@ namespace Coreflow.Activities.MComponents
         public void Execute(
            [DisplayMeta("Fields")]
            [DefaultValue("Fields")]
-           IList<IMPropertyField> pMFields,
+           IList<IMField> pMFields,
 
            [DisplayMeta("Row")]
            [DefaultValue("mFormRow")]
