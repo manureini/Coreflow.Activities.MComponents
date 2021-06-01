@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+
+@inject HttpClient Http
+
+@if (MaxAllowedFiles > 1)
+{
+	<InputFile OnChange="@LoadFiles" multiple />
+}
+else
+{
+	<InputFile OnChange="@LoadFiles" />
+}
+
+@code {
+	protected bool isLoading;
+
+	[Parameter]
+	public int MaxAllowedFiles { get; set; } = 1;
+
+	[Parameter]
+	public string FileInputName { get; set; }
+
+	[Parameter]
+	public IDictionary<string, string> AdditionalHeaders { get; set; }
+
+	private async void LoadFiles(InputFileChangeEventArgs e)
+	{
+		using var content = new MultipartFormDataContent();
+
+		var fcontents = new List<StreamContent>();
+
+		foreach (var file in e.GetMultipleFiles(MaxAllowedFiles))
+		{
+			var fileContent = new StreamContent(file.OpenReadStream());
+			fcontents.Add(fileContent);
+
+			content.Add(
+					content: fileContent,
+					name: "\"files\"",
+					fileName: file.Name);
+		}
+
+		if (content.Any())
+		{
+			content.Headers.Add("FileInputName", FileInputName);
+
+			if (AdditionalHeaders != null)
+			{
+				foreach (var header in AdditionalHeaders)
+				{
+					content.Headers.Add(header.Key, header.Value);
+				}
+			}
+
+			var response = await Http.PostAsync("/documents", content);
+
+			var statuscode = response.StatusCode;
+		}
+
+		foreach (var fcontent in fcontents)
+		{
+			fcontent.Dispose();
+		}
+	}
+}
+
