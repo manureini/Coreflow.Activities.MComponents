@@ -4,6 +4,7 @@ using MComponents.MForm;
 using MComponents.Shared.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,16 +29,23 @@ namespace Coreflow.Activities.MComponents.File
            [DisplayMeta("File Name")]
            string pFileName,
 
+           [DisplayMeta("Property Name")]
+           string pName,
+
            [DisplayMeta("AdditionalHeaders")]
            [DefaultValue("_InputFileAdditionalHeaders")]
            IDictionary<string, string> pAdditionalHeaders
           )
         {
-            var field = new FileFieldGenerator()
+            var field = new FileComplexPropertyField()
             {
+                Property = pName,
                 FileInputName = pFileName,
                 Attributes = new Attribute[] {
-                    new RowAttribute(pRow)
+                    new RowAttribute(pRow),
+                    new DisplayAttribute() {
+                        Name = pFileName
+                    },
                 },
                 AdditionalHeaders = pAdditionalHeaders
             };

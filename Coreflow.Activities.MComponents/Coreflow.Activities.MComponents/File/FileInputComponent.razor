@@ -1,6 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
+@using System.Linq.Expressions
+@using System.Net.Http.Json
 
 @inject HttpClient Http
+
+@DocumentId
 
 @if (MaxAllowedFiles > 1)
 {
@@ -22,6 +26,16 @@ else
 
 	[Parameter]
 	public IDictionary<string, string> AdditionalHeaders { get; set; }
+
+	[Parameter]
+	public Guid DocumentId { get; set; }
+
+	[Parameter]
+    public EventCallback<Guid> DocumentIdChanged { get; set; }
+
+	[Parameter]
+    public Expression<Func<Guid>> DocumentIdExpression { get; set; }
+
 
 	private async void LoadFiles(InputFileChangeEventArgs e)
 	{
@@ -54,7 +68,10 @@ else
 
 			var response = await Http.PostAsync("/documents", content);
 
-			var statuscode = response.StatusCode;
+			var newDocIds = await response.Content.ReadFromJsonAsync<List<Guid>>();
+
+			DocumentId = newDocIds.FirstOrDefault();
+			await DocumentIdChanged.InvokeAsync(DocumentId);
 		}
 
 		foreach (var fcontent in fcontents)
