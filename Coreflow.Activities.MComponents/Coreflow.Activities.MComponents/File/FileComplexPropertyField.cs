@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Coreflow.Activities.MComponents.File
 {
-    public class FileComplexPropertyField : MComplexPropertyField<Guid>
+    public class FileComplexPropertyField : MComplexPropertyField<IDocument>
     {
         public string FileInputName { get; set; }
 
@@ -22,9 +22,9 @@ namespace Coreflow.Activities.MComponents.File
                 builder.OpenComponent<FileInputComponent>(0);
                 builder.AddAttribute(1, nameof(FileInputComponent.FileInputName), FileInputName);
                 builder.AddAttribute(2, nameof(FileInputComponent.AdditionalHeaders), AdditionalHeaders);
-                builder.AddAttribute(3, nameof(FileInputComponent.DocumentId), context.Value);
-                builder.AddAttribute(4, nameof(FileInputComponent.DocumentIdChanged), context.ValueChanged);
-                builder.AddAttribute(5, nameof(FileInputComponent.DocumentIdExpression), context.ValueExpression);
+                builder.AddAttribute(3, nameof(FileInputComponent.Document), context.Value);
+                builder.AddAttribute(4, nameof(FileInputComponent.DocumentChanged), context.ValueChanged);
+                builder.AddAttribute(5, nameof(FileInputComponent.DocumentExpression), context.ValueExpression);
                 builder.CloseComponent();
             };
         }

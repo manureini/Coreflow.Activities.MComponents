@@ -2,9 +2,9 @@
 @using System.Linq.Expressions
 @using System.Net.Http.Json
 
-@inject HttpClient Http
+@inject IFileUploadService FileUploader
 
-@DocumentId
+@Document?.FileName
 
 @if (MaxAllowedFiles > 1)
 {
@@ -16,6 +16,9 @@ else
 }
 
 @code {
+
+
+
 	protected bool isLoading;
 
 	[Parameter]
@@ -28,56 +31,31 @@ else
 	public IDictionary<string, string> AdditionalHeaders { get; set; }
 
 	[Parameter]
-	public Guid DocumentId { get; set; }
+	public IDocument Document { get; set; }
 
 	[Parameter]
-    public EventCallback<Guid> DocumentIdChanged { get; set; }
+	public EventCallback<IDocument> DocumentChanged { get; set; }
 
 	[Parameter]
-    public Expression<Func<Guid>> DocumentIdExpression { get; set; }
+	public Expression<Func<IDocument>> DocumentExpression { get; set; }
 
 
 	private async void LoadFiles(InputFileChangeEventArgs e)
 	{
-		using var content = new MultipartFormDataContent();
+		if (e.FileCount <= 0) //should we set the Document to null?
+			return;
 
-		var fcontents = new List<StreamContent>();
+		if (AdditionalHeaders == null)
+			AdditionalHeaders = new Dictionary<string, string>();
 
-		foreach (var file in e.GetMultipleFiles(MaxAllowedFiles))
-		{
-			var fileContent = new StreamContent(file.OpenReadStream());
-			fcontents.Add(fileContent);
+		if (!AdditionalHeaders.ContainsKey(nameof(FileInputName)))
+			AdditionalHeaders.Add(nameof(FileInputName), FileInputName);
 
-			content.Add(
-					content: fileContent,
-					name: "\"files\"",
-					fileName: file.Name);
-		}
+		var newDocs = await FileUploader.UploadFiles(e.GetMultipleFiles(MaxAllowedFiles), AdditionalHeaders);
 
-		if (content.Any())
-		{
-			content.Headers.Add("FileInputName", FileInputName);
-
-			if (AdditionalHeaders != null)
-			{
-				foreach (var header in AdditionalHeaders)
-				{
-					content.Headers.Add(header.Key, header.Value);
-				}
-			}
-
-			var response = await Http.PostAsync("/documents", content);
-
-			var newDocIds = await response.Content.ReadFromJsonAsync<List<Guid>>();
-
-			DocumentId = newDocIds.FirstOrDefault();
-			await DocumentIdChanged.InvokeAsync(DocumentId);
-		}
-
-		foreach (var fcontent in fcontents)
-		{
-			fcontent.Dispose();
-		}
+		Document = newDocs.FirstOrDefault();
+		await DocumentChanged.InvokeAsync(Document);
 	}
+
 }
 
