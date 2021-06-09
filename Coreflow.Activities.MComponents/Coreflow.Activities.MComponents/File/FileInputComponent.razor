@@ -4,20 +4,40 @@
 
 @inject IFileUploadService FileUploader
 
-@Document?.FileName
-
 @if (MaxAllowedFiles > 1)
 {
 	<InputFile OnChange="@LoadFiles" multiple />
 }
 else
 {
-	<InputFile OnChange="@LoadFiles" />
+	<div class="c-file-input">
+
+		@if (mShowUploadFile || Document == null)
+		{
+			<InputFile OnChange="@LoadFiles" />
+			@if(mProgress > -1)
+			{
+				<div class="m-file-input-progress-container">
+				  <div class="m-file-input-progress-bar" style="width:@(Math.Round(mProgress))%"></div>
+				</div>
+
+			}
+
+			@if (Document != null)
+			{
+			 <button type="button" class="m-wizard-btn m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">X</button>
+			}
+		}
+		else
+		{
+		 <span>@Document?.FileName</span>
+		 <button type="button" class="m-wizard-btn m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">Upload new file</button>
+		}
+
+	</div>
 }
 
 @code {
-
-
 
 	protected bool isLoading;
 
@@ -39,8 +59,10 @@ else
 	[Parameter]
 	public Expression<Func<IDocument>> DocumentExpression { get; set; }
 
+	protected bool mShowUploadFile = false;
+	protected float mProgress = -1;
 
-	private async void LoadFiles(InputFileChangeEventArgs e)
+	protected async void LoadFiles(InputFileChangeEventArgs e)
 	{
 		if (e.FileCount <= 0) //should we set the Document to null?
 			return;
@@ -51,10 +73,23 @@ else
 		if (!AdditionalHeaders.ContainsKey(nameof(FileInputName)))
 			AdditionalHeaders.Add(nameof(FileInputName), FileInputName);
 
-		var newDocs = await FileUploader.UploadFiles(e.GetMultipleFiles(MaxAllowedFiles), AdditionalHeaders);
+		var newDocs = await FileUploader.UploadFiles(e.GetMultipleFiles(MaxAllowedFiles), AdditionalHeaders, OnProgressChanged);
 
 		Document = newDocs.FirstOrDefault();
 		await DocumentChanged.InvokeAsync(Document);
+
+		mShowUploadFile = false;
+	}
+
+	protected void OnProgressChanged(IBrowserFile pFile, float pProgress)
+	{
+		mProgress = pProgress;
+		StateHasChanged();
+	}
+
+	protected void OnBtnUploadNewFile()
+	{
+		mShowUploadFile = !mShowUploadFile;
 	}
 
 }

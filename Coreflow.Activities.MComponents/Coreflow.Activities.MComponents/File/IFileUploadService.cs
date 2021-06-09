@@ -9,6 +9,6 @@ namespace Coreflow.Activities.MComponents.File
 {
     public interface IFileUploadService
     {
-        public Task<IList<IDocument>> UploadFiles(IReadOnlyList<IBrowserFile> pFiles, IDictionary<string, string> pAdditionalHeaders);
+        public Task<IList<IDocument>> UploadFiles(IReadOnlyList<IBrowserFile> pFiles, IDictionary<string, string> pAdditionalHeaders, Action<IBrowserFile, float> pOnProgressChanged);
     }
 }
