@@ -11,12 +11,13 @@ namespace Coreflow.Activities.MComponents
 {
     public class MarkdownMFieldGenerator : MFieldGenerator
     {
-        private string mText;
-
-        protected static MarkdownPipeline Pipeline => new MarkdownPipelineBuilder()
+        public readonly static MarkdownPipeline Pipeline = new MarkdownPipelineBuilder()
             .UseEmojiAndSmiley()
             .UseAdvancedExtensions()
+            .UsePipeTables()
             .Build();
+
+        private string mText;
 
         public string Text
         {
