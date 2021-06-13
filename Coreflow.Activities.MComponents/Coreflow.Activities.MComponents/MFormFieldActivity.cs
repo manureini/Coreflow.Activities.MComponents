@@ -35,8 +35,11 @@ namespace Coreflow.Activities.MComponents
            [DisplayMeta("Name")]
            string pName,
 
+           [DisplayMeta("Attributes")]
+           Attribute[] pAdditionalAttributes,
+
            [DisplayMeta("Additional Attributes")]
-           Attribute[] pAdditionalAttributes
+           IReadOnlyDictionary<string, object> pAdditionalAttributes2
           )
         {
             MField field = new MField()
@@ -47,7 +50,8 @@ namespace Coreflow.Activities.MComponents
                     new RowAttribute(pRow),
                     new DisplayAttribute() {
                         Name = pDisplay ?? pName
-                }}
+                }},
+                AdditionalAttributes = pAdditionalAttributes2
             };
             if (pAdditionalAttributes != null)
                 field.Attributes = field.Attributes.Concat(pAdditionalAttributes).ToArray();

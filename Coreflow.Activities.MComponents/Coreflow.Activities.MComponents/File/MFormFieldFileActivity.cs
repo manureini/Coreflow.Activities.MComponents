@@ -34,7 +34,10 @@ namespace Coreflow.Activities.MComponents.File
 
            [DisplayMeta("AdditionalHeaders")]
            [DefaultValue("_InputFileAdditionalHeaders")]
-           IDictionary<string, string> pAdditionalHeaders
+           IDictionary<string, string> pAdditionalHeaders,
+
+           [DisplayMeta("Attributes")]
+           Attribute[] pAdditionalAttributes
           )
         {
             var field = new FileComplexPropertyField()
@@ -49,7 +52,8 @@ namespace Coreflow.Activities.MComponents.File
                 },
                 AdditionalHeaders = pAdditionalHeaders
             };
-
+            if (pAdditionalAttributes != null)
+                field.Attributes = field.Attributes.Concat(pAdditionalAttributes).ToArray();
             pMFields.Add(field);
         }
 

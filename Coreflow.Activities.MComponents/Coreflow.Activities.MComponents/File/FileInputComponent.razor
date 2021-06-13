@@ -10,29 +10,32 @@
 }
 else
 {
-	<div class="c-file-input">
-
+	<div class="c-file-input-container">		 
+	
+		<div class="col-sm-12">
 		@if (mShowUploadFile || Document == null)
 		{
-			<InputFile OnChange="@LoadFiles" />
-			@if(mProgress > -1)
-			{
-				<div class="m-file-input-progress-container">
-				  <div class="m-file-input-progress-bar" style="width:@(Math.Round(mProgress))%"></div>
-				</div>
+			<div class="c-file-input">
+				<InputFile id="@mInputId" OnChange="@LoadFiles" />
+				@if(mProgress > -1)
+				{
+					<div class="m-file-input-progress-container">
+					  <div class="m-file-input-progress-bar" style="width:@(Math.Round(mProgress))%"></div>
+					</div>
+				}
 
-			}
-
-			@if (Document != null)
-			{
-			 <button type="button" class="m-wizard-btn m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">X</button>
-			}
+				@if (Document != null)
+				{
+				 <button type="button" class="m-wizard-btn m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">X</button>
+				}
+			</div>
 		}
 		else
 		{
 		 <span>@Document?.FileName</span>
 		 <button type="button" class="m-wizard-btn m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">Upload new file</button>
 		}
+		</div>
 
 	</div>
 }
@@ -58,7 +61,14 @@ else
 
 	[Parameter]
 	public Expression<Func<IDocument>> DocumentExpression { get; set; }
+	
+	[Parameter]
+	public string Title { get; set; }
 
+	[Parameter]
+	public Attribute[] Attributes { get; set; }
+
+	protected Guid mInputId = Guid.NewGuid();
 	protected bool mShowUploadFile = false;
 	protected float mProgress = -1;
 

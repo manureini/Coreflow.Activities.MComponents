@@ -25,6 +25,8 @@ namespace Coreflow.Activities.MComponents.File
                 builder.AddAttribute(3, nameof(FileInputComponent.Document), context.Value);
                 builder.AddAttribute(4, nameof(FileInputComponent.DocumentChanged), context.ValueChanged);
                 builder.AddAttribute(5, nameof(FileInputComponent.DocumentExpression), context.ValueExpression);
+                builder.AddAttribute(5, nameof(FileInputComponent.Title), Property);
+                builder.AddAttribute(5, nameof(FileInputComponent.Attributes), Attributes);
                 builder.CloseComponent();
             };
         }
