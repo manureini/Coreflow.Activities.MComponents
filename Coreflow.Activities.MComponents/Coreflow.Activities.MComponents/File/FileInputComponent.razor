@@ -4,19 +4,21 @@
 
 @inject IFileUploadService FileUploader
 
+@inherits InputBase<IDocument>
+
 @if (MaxAllowedFiles > 1)
 {
 	<InputFile OnChange="@LoadFiles" multiple />
 }
 else
 {
-	<div class="c-file-input-container">		 
+	<div class="c-file-input-container">
 	
 		<div class="col-sm-12">
-		@if (mShowUploadFile || Document == null)
+		@if (mShowUploadFile || Value == null)
 		{
 			<div class="c-file-input">
-				<InputFile id="@mInputId" OnChange="@LoadFiles" />
+				<InputFile id="@mInputId" OnChange="@LoadFiles" accept="@Accept" />
 				@if(mProgress > -1)
 				{
 					<div class="m-file-input-progress-container">
@@ -24,7 +26,7 @@ else
 					</div>
 				}
 
-				@if (Document != null)
+				@if (Value != null)
 				{
 				 <button type="button" class="m-wizard-btn m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">X</button>
 				}
@@ -32,7 +34,7 @@ else
 		}
 		else
 		{
-		 <span>@Document?.FileName</span>
+		 <span>@Value?.FileName</span>
 		 <button type="button" class="m-wizard-btn m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">Upload new file</button>
 		}
 		</div>
@@ -52,18 +54,12 @@ else
 
 	[Parameter]
 	public IDictionary<string, string> AdditionalHeaders { get; set; }
-
-	[Parameter]
-	public IDocument Document { get; set; }
-
-	[Parameter]
-	public EventCallback<IDocument> DocumentChanged { get; set; }
-
-	[Parameter]
-	public Expression<Func<IDocument>> DocumentExpression { get; set; }
-	
+		
 	[Parameter]
 	public string Title { get; set; }
+
+	[Parameter]
+	public string Accept { get; set; }
 
 	[Parameter]
 	public Attribute[] Attributes { get; set; }
@@ -85,9 +81,7 @@ else
 
 		var newDocs = await FileUploader.UploadFiles(e.GetMultipleFiles(MaxAllowedFiles), AdditionalHeaders, OnProgressChanged);
 
-		Document = newDocs.FirstOrDefault();
-		await DocumentChanged.InvokeAsync(Document);
-
+		CurrentValue = newDocs.FirstOrDefault();
 		mShowUploadFile = false;
 	}
 
@@ -102,5 +96,11 @@ else
 		mShowUploadFile = !mShowUploadFile;
 	}
 
-}
+	protected override bool TryParseValueFromString(string value, out IDocument result, out string validationErrorMessage)
+	{
+		result = null;
+		validationErrorMessage = null;
+		return false;	
+	}
 
+}

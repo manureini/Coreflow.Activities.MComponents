@@ -37,7 +37,10 @@ namespace Coreflow.Activities.MComponents.File
            IDictionary<string, string> pAdditionalHeaders,
 
            [DisplayMeta("Attributes")]
-           Attribute[] pAdditionalAttributes
+           Attribute[] pAdditionalAttributes,
+
+           [DisplayMeta("Accept")]
+           string pAccept
           )
         {
             var field = new FileComplexPropertyField()
@@ -50,7 +53,8 @@ namespace Coreflow.Activities.MComponents.File
                         Name = pFileName
                     },
                 },
-                AdditionalHeaders = pAdditionalHeaders
+                AdditionalHeaders = pAdditionalHeaders,
+                Accept = pAccept
             };
             if (pAdditionalAttributes != null)
                 field.Attributes = field.Attributes.Concat(pAdditionalAttributes).ToArray();
