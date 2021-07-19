@@ -8,99 +8,100 @@
 
 @if (MaxAllowedFiles > 1)
 {
-	<InputFile OnChange="@LoadFiles" multiple />
+    <InputFile OnChange="@LoadFiles" multiple />
 }
 else
 {
-	<div class="c-file-input-container">
-	
-		<div class="col-sm-12">
-		@if (mShowUploadFile || Value == null)
-		{
-			<div class="c-file-input">
-				<InputFile id="@mInputId" OnChange="@LoadFiles" accept="@Accept" />
-				@if(mProgress > -1)
-				{
-					<div class="m-file-input-progress-container">
-					  <div class="m-file-input-progress-bar" style="width:@(Math.Round(mProgress))%"></div>
-					</div>
-				}
+    <div class="c-file-input-container">
 
-				@if (Value != null)
-				{
-				 <button type="button" class="m-wizard-btn m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">X</button>
-				}
-			</div>
-		}
-		else
-		{
-		 <span>@Value?.FileName</span>
-		 <button type="button" class="m-wizard-btn m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">Upload new file</button>
-		}
-		</div>
+        <div class="col-sm-12">
+            @if (mShowUploadFile || Value == null)
+            {
+                <div class="c-file-input">
+                    <InputFile id="@mInputId" OnChange="@LoadFiles" accept="@Accept" />
+                    @if (mProgress > -1)
+                    {
+                        <div class="m-file-input-progress-container">
+                            <div class="m-file-input-progress-bar" style="width:@(Math.Round(mProgress))%"></div>
+                        </div>
+                    }
 
-	</div>
+                    @if (Value != null)
+                    {
+                        <button type="button" class="m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">X</button>
+                    }
+                </div>
+            }
+            else
+            {
+                <span>@Value?.FileName</span>
+                <a class="m-btn m-btn-primary m-btn-icon m-btn-sm" href="@Value.Url" target="_blank"><i class="fas fa-download"></i></a>
+                <button type="button" class="m-wizard-btn m-btn m-btn-primary m-btn-sm" @onclick="OnBtnUploadNewFile">Upload new file</button>
+            }
+        </div>
+
+    </div>
 }
 
 @code {
 
-	protected bool isLoading;
+    protected bool isLoading;
 
-	[Parameter]
-	public int MaxAllowedFiles { get; set; } = 1;
+    [Parameter]
+    public int MaxAllowedFiles { get; set; } = 1;
 
-	[Parameter]
-	public string FileInputName { get; set; }
+    [Parameter]
+    public string FileInputName { get; set; }
 
-	[Parameter]
-	public IDictionary<string, string> AdditionalHeaders { get; set; }
-		
-	[Parameter]
-	public string Title { get; set; }
+    [Parameter]
+    public IDictionary<string, string> AdditionalHeaders { get; set; }
 
-	[Parameter]
-	public string Accept { get; set; }
+    [Parameter]
+    public string Title { get; set; }
 
-	[Parameter]
-	public Attribute[] Attributes { get; set; }
+    [Parameter]
+    public string Accept { get; set; }
 
-	protected Guid mInputId = Guid.NewGuid();
-	protected bool mShowUploadFile = false;
-	protected float mProgress = -1;
+    [Parameter]
+    public Attribute[] Attributes { get; set; }
 
-	protected async void LoadFiles(InputFileChangeEventArgs e)
-	{
-		if (e.FileCount <= 0) //should we set the Document to null?
-			return;
+    protected Guid mInputId = Guid.NewGuid();
+    protected bool mShowUploadFile = false;
+    protected float mProgress = -1;
 
-		if (AdditionalHeaders == null)
-			AdditionalHeaders = new Dictionary<string, string>();
+    protected async void LoadFiles(InputFileChangeEventArgs e)
+    {
+        if (e.FileCount <= 0) //should we set the Document to null?
+            return;
 
-		if (!AdditionalHeaders.ContainsKey(nameof(FileInputName)))
-			AdditionalHeaders.Add(nameof(FileInputName), FileInputName);
+        if (AdditionalHeaders == null)
+            AdditionalHeaders = new Dictionary<string, string>();
 
-		var newDocs = await FileUploader.UploadFiles(e.GetMultipleFiles(MaxAllowedFiles), AdditionalHeaders, OnProgressChanged);
+        if (!AdditionalHeaders.ContainsKey(nameof(FileInputName)))
+            AdditionalHeaders.Add(nameof(FileInputName), FileInputName);
 
-		CurrentValue = newDocs.FirstOrDefault();
-		mShowUploadFile = false;
-	}
+        var newDocs = await FileUploader.UploadFiles(e.GetMultipleFiles(MaxAllowedFiles), AdditionalHeaders, OnProgressChanged);
 
-	protected void OnProgressChanged(IBrowserFile pFile, float pProgress)
-	{
-		mProgress = pProgress;
-		StateHasChanged();
-	}
+        CurrentValue = newDocs.FirstOrDefault();
+        mShowUploadFile = false;
+    }
 
-	protected void OnBtnUploadNewFile()
-	{
-		mShowUploadFile = !mShowUploadFile;
-	}
+    protected void OnProgressChanged(IBrowserFile pFile, float pProgress)
+    {
+        mProgress = pProgress;
+        StateHasChanged();
+    }
 
-	protected override bool TryParseValueFromString(string value, out IDocument result, out string validationErrorMessage)
-	{
-		result = null;
-		validationErrorMessage = null;
-		return false;	
-	}
+    protected void OnBtnUploadNewFile()
+    {
+        mShowUploadFile = !mShowUploadFile;
+    }
+
+    protected override bool TryParseValueFromString(string value, out IDocument result, out string validationErrorMessage)
+    {
+        result = null;
+        validationErrorMessage = null;
+        return false;
+    }
 
 }

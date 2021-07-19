@@ -8,10 +8,8 @@ namespace Coreflow.Activities.MComponents.File
 {
     public interface IDocument
     {
-        public string FileName { get; set; }
+        public string FileName { get; }
 
-        public string FileExtension { get; set; }
-
-        public DateTime CreationDate { get; set; }
+        public string Url { get; }
     }
 }
