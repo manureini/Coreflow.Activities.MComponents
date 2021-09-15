@@ -83,7 +83,10 @@ else
         var newDocs = await FileUploader.UploadFiles(e.GetMultipleFiles(MaxAllowedFiles), AdditionalHeaders, OnProgressChanged);
 
         CurrentValue = newDocs.FirstOrDefault();
+        mProgress = -1;
+
         mShowUploadFile = false;
+        StateHasChanged();
     }
 
     protected void OnProgressChanged(IBrowserFile pFile, float pProgress)
