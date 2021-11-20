@@ -19,6 +19,7 @@ namespace Coreflow.Activities.MComponents
 
         private string mText;
 
+        [Parameter]
         public string Text
         {
             get => mText;
@@ -30,10 +31,13 @@ namespace Coreflow.Activities.MComponents
         }
 
         public MarkupString Html { get; protected set; }
-
-        public override RenderFragment<MFieldGeneratorContext> Template => (context) => (builder) =>
+        
+        public MarkdownMFieldGenerator()
         {
-            builder.AddContent(0, Html);
-        };
+            Template = (context) => (builder) =>
+            {
+                builder.AddContent(0, Html);
+            };
+        }
     }
 }

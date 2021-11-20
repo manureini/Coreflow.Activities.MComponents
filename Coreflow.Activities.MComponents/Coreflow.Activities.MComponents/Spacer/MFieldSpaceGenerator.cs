@@ -13,9 +13,12 @@ namespace Coreflow.Activities.MComponents
     {
         public int Height { get; set; }
 
-        public override RenderFragment<MFieldGeneratorContext> Template => (context) => (builder) =>
+        public MFieldSpaceGenerator()
         {
-            builder.AddMarkupContent(0, $"<div class=\"m-field-space\" style=\"height: {Height}px\"></div>");
-        };
+            Template = (context) => (builder) =>
+            {
+                builder.AddMarkupContent(0, $"<div class=\"m-field-space\" style=\"height: {Height}px\"></div>");
+            };
+        }
     }
 }
