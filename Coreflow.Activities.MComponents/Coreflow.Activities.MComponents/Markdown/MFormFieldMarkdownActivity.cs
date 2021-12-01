@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace Coreflow.Activities.MComponents
+namespace Coreflow.Activities.MComponents.Markdown
 {
     [DisplayMeta("MField Text", "MForm", "fa-keyboard")]
     public class MFormFieldMarkdownActivity : ICodeActivity
@@ -36,7 +36,7 @@ namespace Coreflow.Activities.MComponents
                     new RowAttribute(pRow)
                 }
             };
-             
+
             pMFields.Add(field);
         }
 

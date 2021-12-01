@@ -72,7 +72,7 @@ namespace Coreflow.Activities.MComponents.Markdown
 
                 RenderFragment cc2 = (bb) =>
                 {
-                    bb.OpenComponent<Markdown>(20);
+                    bb.OpenComponent<MarkdownText>(20);
                     bb.AddAttribute(21, "Text", Value);
                     bb.CloseComponent();  //Markdown
                 };

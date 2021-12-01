@@ -6,18 +6,19 @@ using System;
 
 namespace Coreflow.Activities.MComponents.Markdown
 {
-    public class Markdown : ComponentBase
+    public class MarkdownText : ComponentBase
     {
         [Parameter]
         public string Text { get; set; }
 
         protected MarkupString mHtml;
 
-        protected static MarkdownPipeline Pipeline = MarkdownMFieldGenerator.Pipeline;
-
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            builder.AddContent(0, mHtml);
+            builder.OpenElement(0, "div");
+            builder.AddAttribute(1, "class", "m-markdown-container");
+            builder.AddContent(2, mHtml);
+            builder.CloseElement();
         }
 
         protected override void OnParametersSet()
@@ -25,7 +26,7 @@ namespace Coreflow.Activities.MComponents.Markdown
             if (Text == null)
                 return;
 
-            mHtml = new MarkupString(Markdig.Markdown.ToHtml(Text, Pipeline));
+            mHtml = MarkdownHelper.RenderMarkdown(Text);
         }
     }
 }

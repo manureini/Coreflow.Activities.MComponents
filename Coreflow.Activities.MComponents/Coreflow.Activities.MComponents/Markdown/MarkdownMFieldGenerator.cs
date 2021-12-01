@@ -7,37 +7,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Coreflow.Activities.MComponents
+namespace Coreflow.Activities.MComponents.Markdown
 {
     public class MarkdownMFieldGenerator : MFieldGenerator
     {
-        public readonly static MarkdownPipeline Pipeline = new MarkdownPipelineBuilder()
-            .UseEmojiAndSmiley()
-            .UseAdvancedExtensions()
-            .UsePipeTables()
-            .Build();
-
-        private string mText;
-
         [Parameter]
-        public string Text
-        {
-            get => mText;
-            set
-            {
-                mText = value;
-                Html = new MarkupString(Markdig.Markdown.ToHtml(mText, Pipeline));
-            }
-        }
-
-        public MarkupString Html { get; protected set; }
+        public string Text { get; set; }      
         
+        [Parameter]
+        public string Label { get; set; }
+
+        protected MarkupString mHtml;
+
         public MarkdownMFieldGenerator()
         {
             Template = (context) => (builder) =>
             {
-                builder.AddContent(0, Html);
+                if(Label != null)
+                {
+                    builder.OpenElement(30, "label");
+                    builder.AddAttribute(31, "class", "col-sm-12 col-form-label"); 
+                    builder.AddContent(32, Label);
+                    builder.CloseElement();
+                }
+
+                builder.OpenElement(50, "div");
+                builder.AddAttribute(51, "class", "m-markdown-container");
+                builder.AddContent(52, mHtml);
+                builder.CloseElement();
             };
+        }
+
+        protected override void OnParametersSet()
+        {
+            mHtml = MarkdownHelper.RenderMarkdown(Text);
         }
     }
 }
