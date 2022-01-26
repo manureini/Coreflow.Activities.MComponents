@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Coreflow.Activities.MComponents.File
 {
-    public class FileComplexPropertyField : MComplexPropertyField<IDocument>
+    public class FileComplexPropertyField : MComplexPropertyField<IFile>
     {
         public string FileInputName { get; set; }
 

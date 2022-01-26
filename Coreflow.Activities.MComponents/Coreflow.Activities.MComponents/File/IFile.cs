@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coreflow.Activities.MComponents.File
 {
-    public interface IDocument
+    public interface IFile
     {
         public string FileName { get; }
 

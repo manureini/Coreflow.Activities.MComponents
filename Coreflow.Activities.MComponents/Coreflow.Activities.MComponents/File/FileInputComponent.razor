@@ -4,7 +4,7 @@
 
 @inject IFileUploadService FileUploader
 
-@inherits InputBase<IDocument>
+@inherits InputBase<IFile>
 
 @if (MaxAllowedFiles > 1)
 {
@@ -100,7 +100,7 @@ else
         mShowUploadFile = !mShowUploadFile;
     }
 
-    protected override bool TryParseValueFromString(string value, out IDocument result, out string validationErrorMessage)
+    protected override bool TryParseValueFromString(string value, out IFile result, out string validationErrorMessage)
     {
         result = null;
         validationErrorMessage = null;
