@@ -10,8 +10,6 @@
   </ItemGroup>
    
   <ItemGroup>
-    <PackageReference Include="Blazored.Modal" Version="6.0.1" />
-    <PackageReference Include="Markdig" Version="0.25.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.6" />
@@ -19,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Coreflow\src\Coreflow\Coreflow.csproj" />
+    <ProjectReference Include="..\..\..\MComponents.Markdown\MComponents.Markdown\MComponents.Markdown\MComponents.Markdown.csproj" />
     <ProjectReference Include="..\..\..\MComponents\MComponents.Shared\MComponents.Shared.csproj" />
     <ProjectReference Include="..\..\..\MComponents\MComponents\MComponents.csproj" />
   </ItemGroup>
