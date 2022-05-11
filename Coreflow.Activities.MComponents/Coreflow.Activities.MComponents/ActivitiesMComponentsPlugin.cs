@@ -2,12 +2,12 @@
 
 namespace Coreflow.Activities.MComponents
 {
-    class ActivitiesMComponentsPlugin : IPlugin
+    public class ActivitiesMComponentsPlugin : IPlugin
     {
         public void OnEnable()
         {
-          //  var asm = typeof(IMPropertyField).Assembly;
-          //   Console.WriteLine(asm.Location);
+            //  var asm = typeof(IMPropertyField).Assembly;
+            //   Console.WriteLine(asm.Location);
         }
     }
 }
